@@ -1,197 +1,252 @@
-#include <iostream>
 #include "s21_vector.h"
+#include <vector>
+using namespace s21;
 
-int main(){
-vector<int> vector_standart;
-vector<int> vector_param(3);
-vector<int> vector_list{1, 2, 3};
-std::cout << "Второй элемент vector_param: " << vector_param[1] << std::endl;
-std::cout << "Элементы vector_list: " << vector_list[0] << vector_list[1] << vector_list[2] << std::endl;
-vector<int> vector_copy(vector_list);
-std::cout << "Элементы vector_copy: " << vector_copy[0] << vector_copy[1] << vector_copy[2] << std::endl;
-vector<int> vector_move = vector_list;
-std::cout << "Элементы vector_move: " << vector_move[0] << vector_move[1] << vector_move[2] << std::endl;
-std::cout << "vector_move.at(0): " << vector_move.at(0) << std::endl;
-std::cout << "vector_move.front(): " << vector_move.front() << std::endl;
-std::cout << "vector_move.back(): " << vector_move.back() << std::endl;
-std::cout << "vector_move.at(-4): " << vector_move.at(2) << std::endl;
-
-return 0;
-}
-
-template <typename value_type>
-vector<value_type>::vector() : container_size(0), container_capacity(0) {
-array = nullptr;
-std::cout << "Произошёл стандартный конструктор" << std::endl;
-}
-
-template <typename value_type>
-vector<value_type>::vector(size_type n) {
+template <typename T>
+vector<T>::vector(size_type n) {
     allocate_mem(n);
-    std::cout << "Произошёл конструктор с параметром" << std::endl;
 }
-template <typename value_type>
-vector<value_type>::vector(std::initializer_list<value_type> const &items):vector(
-    static_cast<container_size_type>(items.container_size())){
+template <typename T>
+vector<T>::vector(std::initializer_list<T> const &items):vector(
+    static_cast<size_type>(items.size())){
         int count = 0;
         for (auto element : items) {
             array [count] = element;
             ++count; 
         }
-        std::cout << "Произошёл конструктор с заданным списком элементов (-1 деструктор)" << std::endl;
 }
 
-template <typename value_type>
-vector<value_type>::~vector(){
+template <typename T>
+vector<T>::~vector(){
     delete_mem();
-    std::cout << "Произошёл стандартный деструктор" << std::endl;
 }
 
-template <typename value_type>
-vector<value_type>::vector(const vector &v){
-    allocate_mem(v.container_size);
-    for (container_size_type i = 0; i < container_size; i++)
+template <typename T>
+vector<T>::vector(const vector &v){
+    allocate_mem(v.container_capacity);
+    for (size_type i = 0; i < container_size; ++i)
         array[i] = v.array[i];
-    std::cout << "Произошёл конструктор копирования" << std::endl;
 }
 
-template <typename value_type>
-vector<value_type>::vector(vector &&v):container_size{0}, array{nullptr} {
+template <typename T>
+vector<T>::vector(vector &&v): container_size{0}, container_capacity{0}, array{nullptr} {
     std::swap(container_size, v.container_size);
+    std::swap(container_capacity, v.container_capacity);
     std::swap(array, v.array);
-    std::cout << "Произошёл конструктор перемещения" << std::endl;
 }
 
-template <typename value_type>
-vector<value_type> vector<value_type>::operator=(vector &&v){
+template <typename T>
+vector<T> vector<T>::operator=(vector &&v){
     if (this != &v) {
     delete_mem();
     std::swap(container_size, v.container_size);
+    std::swap(container_capacity, v.container_capacity);
     std::swap(array, v.array);
     }
-    std::cout << "Произошёл оператор присваивания перемещением" << std::endl;
     return *this;
 }
 
-template <typename value_type>
-vector<value_type> vector<value_type>::operator=(const vector &v){
+template <typename T>
+vector<T> vector<T>::operator=(const vector &v){
     if (this != &v) {
     delete_mem();
-    allocate_mem(v.container_size);
-    for (container_size_type i = 0; i < container_size; i++)
+    allocate_mem(v.container_capacity);
+    for (size_type i = 0; i < container_size; ++i)
         array[i] = v.array[i];
     }
-    std::cout << "Произошёл оператор присваивания копированием" << std::endl;
     return *this;
 }
 
-template <typename value_type>
-typename vector<value_type>::reference vector<value_type>::at(size_type pos) {
+template <typename T>
+typename vector<T>::reference vector<T>::at(size_type pos) {
     if(pos > container_size - 1)
         throw std::out_of_range("Выход за пределы вектора!");
     return array[pos];
 }
 
-template <typename value_type>
-typename vector<value_type>::reference vector<value_type>::operator[](size_type pos) {
+template <typename T>
+typename vector<T>::reference vector<T>::at(size_type pos) const {
+    if(pos > container_size - 1)
+        throw std::out_of_range("Выход за пределы вектора!");
     return array[pos];
 }
 
-template <typename value_type>
-typename vector<value_type>::reference vector<value_type>::operator[](size_type pos) const {
+template <typename T>
+typename vector<T>::reference vector<T>::operator[](size_type pos) {
     return array[pos];
 }
 
-template <typename value_type>
-typename vector<value_type>::const_reference vector<value_type>::front() {
+template <typename T>
+typename vector<T>::reference vector<T>::operator[](size_type pos) const {
+    return array[pos];
+}
+
+template <typename T>
+typename vector<T>::const_reference vector<T>::front() {
     return array[0];
 }
 
-template <typename value_type>
-typename vector<value_type>::const_reference vector<value_type>::back() {
+template <typename T>
+typename vector<T>::const_reference vector<T>::back() {
     return array[container_size - 1];
 }
 
-template <typename value_type>
-value_type* vector<value_type>::data(){
+template <typename T>
+T* vector<T>::data(){
     return array;
 }
 
-template <typename value_type>
-typename vector<value_type>::iterator vector<value_type>::begin() {
+template <typename T>
+typename vector<T>::iterator vector<T>::begin() {
     return array;
 }
 
-template <typename value_type>
-typename vector<value_type>::iterator vector<value_type>::end() {
-    return array[container_size] + 1;
+template <typename T>
+typename vector<T>::iterator vector<T>::end() {
+    return &array[container_size];
 }
 
-template <typename value_type>
-typename vector<value_type>::iterator vector<value_type>::begin() const {
+template <typename T>
+typename vector<T>::iterator vector<T>::begin() const {
     return array;
 }
 
-template <typename value_type>
-typename vector<value_type>::iterator vector<value_type>::end() const {
-    return array[container_size] + 1;
+template <typename T>
+typename vector<T>::iterator vector<T>::end() const {
+    return &array[container_size];
 }
 
-template <typename value_type>
-bool vector<value_type>::empty() {
-    if (container_size != 0 && array != nullptr)
+template <typename T>
+bool vector<T>::empty() {
+    if (container_size == 0)
         return true;
     else 
         return false;
 }
 
-template <typename value_type>
-vector<value_type>::size_type vector<value_type>::size() {
+template <typename T>
+typename vector<T>::size_type vector<T>::size() {
     return container_size;
 }
 
-template <typename value_type>
-vector<value_type>::size_type vector<value_type>::max_size() {
-    return std::numeric_limits<value_type>::max();
+template <typename T>
+typename vector<T>::size_type vector<T>::max_size() {
+    std::allocator <T> max;
+    return static_cast<size_type>(max.max_size());
 }
 
-template <typename value_type>
-void vector<value_type>::reserve(size_type container_size) {
-    value_type array_rev* = new value_type[container_size]{}; 
-    for (int i = 0, j = container_size-1; i < container_size; i++, j--)
-        array_rev[i] = array[j]
-    delete[] array;
-    array = array_rev;
-}
-
-template <typename value_type>
-vector<value_type>::size_type vector<value_type>::capacity(){
-    return container_capacity;
-}
-
-template <typename value_type>
-void vector<value_type>::shrink_to_fit() {
-    if (container_capacity > conteiner_size) {
-        value_type temp* = new value_type[conteiner_size];
-        for (int i = 0, i < container_size; i++)
-        temp[i] = array[i]
-        delete[] array;
-        array = temp;
+template <typename T>
+void vector<T>::reserve(size_type size) {
+    if (size > max_size())
+        throw std::out_of_range("Заданный буфер больше возможного размера!");
+    if (size > container_capacity) {
+    container_capacity = size;
+    reserve_memory(size);
     }
 }
 
+template <typename T>
+typename vector<T>::size_type vector<T>::capacity(){
+    return container_capacity;
+}
 
-template <typename value_type>
-void vector<value_type>::allocate_mem(size_type container_size) {
-    array = new value_type[container_size]{};
+template <typename T>
+void vector<T>::shrink_to_fit() {
+    if (container_capacity > container_size) {
+        container_capacity = container_size;
+        reserve_memory(container_size);
+    }
+}
+
+template <typename T>
+void vector<T>::clear() {
+    container_size = 0;
+}
+
+template <typename T>
+typename vector<T>::iterator vector<T>::insert(iterator pos, const_reference value) {
+    if(container_size >= container_capacity)
+        container_capacity *= 2;
+    T* temp = new T[container_capacity];
+    T* result = nullptr;
+    for (size_type i = 0, j = 0; i <= container_size; ++i, ++j) {
+        if (pos == &array[i]) {
+            temp[i] = value;
+            j--;
+            result = &temp[i];
+        } else {
+            temp[i] = array[j];
+        }
+    }
+    delete[] array;
+    array = temp;
+    container_size++;
+    return result;
+}
+
+template <typename T>
+void vector<T>::erase(iterator pos) {
+    T* temp = new T[container_capacity];
+    for (size_type i = 0, j = 0; i < container_size; ++i, ++j) {
+        if (pos != &array[i]) {
+            temp[j] = array[i];
+         } else {
+              j--;
+         }
+   }
+    delete[] array;
+    array = temp;
+    container_size--;
+}
+
+template <typename T>
+void vector<T>::push_back(const_reference value) {
+    if (container_capacity > container_size)
+        array[container_size] = value;
+    else {
+    container_capacity *= 2;
+    reserve_memory(container_size);
+    array[container_size] = value;
+    }
+    container_size++;
+}
+
+template <typename T>
+void vector<T>::pop_back() {
+    if(!empty())
+    container_size--;
+}
+
+template <typename T>
+void vector<T>::swap(vector& other) {
+    std::swap(container_size, other.container_size);
+    std::swap(container_capacity, other.container_capacity);
+    std::swap(array, other.array);
+}
+
+
+template <typename T>
+void vector<T>::allocate_mem(size_type container_size) {
+    array = new T[container_size]{};
     this->container_size = container_size;
     container_capacity = container_size;
 }
 
-template <typename value_type>
-void vector<value_type>::delete_mem() {
+template <typename T>
+void vector<T>::delete_mem() {
     if(array != nullptr)
         delete[] array;
     container_size = 0;
     container_capacity = 0;
+}
+
+/// @brief Изменение размера буфера/размера вектора через временный массив
+/// @param size новый размер вектора
+template <typename T>
+void vector<T>::reserve_memory(size_type size) {
+    T* array_rev = new T[container_capacity]; 
+    for (size_type i = 0; i < size; ++i)
+        array_rev[i] = array[i];
+    delete[] array;
+    array = array_rev;
 }
