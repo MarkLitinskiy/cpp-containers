@@ -1,18 +1,24 @@
 #include "s21_vector.h"
-#include <vector>
+
 using namespace s21;
+
+template <typename T>
+vector<T>::vector():container_size(0), container_capacity(0){
+    array = nullptr;
+}
 
 template <typename T>
 vector<T>::vector(size_type n) {
     allocate_mem(n);
 }
+
 template <typename T>
-vector<T>::vector(std::initializer_list<T> const &items):vector(
+vector<T>::vector(std::initializer_list<T> const &items) noexcept:vector(
     static_cast<size_type>(items.size())){
         int count = 0;
         for (auto element : items) {
             array [count] = element;
-            ++count; 
+            ++count;
         }
 }
 
@@ -29,7 +35,7 @@ vector<T>::vector(const vector &v){
 }
 
 template <typename T>
-vector<T>::vector(vector &&v): container_size{0}, container_capacity{0}, array{nullptr} {
+vector<T>::vector(vector &&v) noexcept: container_size(0), container_capacity(0), array(nullptr){
     std::swap(container_size, v.container_size);
     std::swap(container_capacity, v.container_capacity);
     std::swap(array, v.array);
@@ -65,59 +71,37 @@ typename vector<T>::reference vector<T>::at(size_type pos) {
 }
 
 template <typename T>
-typename vector<T>::reference vector<T>::at(size_type pos) const {
-    if(pos > container_size - 1)
-        throw std::out_of_range("Выход за пределы вектора!");
+typename vector<T>::reference vector<T>::operator[](size_type pos) noexcept{
     return array[pos];
 }
 
 template <typename T>
-typename vector<T>::reference vector<T>::operator[](size_type pos) {
-    return array[pos];
-}
-
-template <typename T>
-typename vector<T>::reference vector<T>::operator[](size_type pos) const {
-    return array[pos];
-}
-
-template <typename T>
-typename vector<T>::const_reference vector<T>::front() {
+typename vector<T>::const_reference vector<T>::front() const noexcept{
     return array[0];
 }
 
 template <typename T>
-typename vector<T>::const_reference vector<T>::back() {
+typename vector<T>::const_reference vector<T>::back() const noexcept{
     return array[container_size - 1];
 }
 
 template <typename T>
-T* vector<T>::data(){
+T* vector<T>::data() noexcept{
     return array;
 }
 
 template <typename T>
-typename vector<T>::iterator vector<T>::begin() {
+typename vector<T>::iterator vector<T>::begin() noexcept{
     return array;
 }
 
 template <typename T>
-typename vector<T>::iterator vector<T>::end() {
+typename vector<T>::iterator vector<T>::end() noexcept{
     return &array[container_size];
 }
 
 template <typename T>
-typename vector<T>::iterator vector<T>::begin() const {
-    return array;
-}
-
-template <typename T>
-typename vector<T>::iterator vector<T>::end() const {
-    return &array[container_size];
-}
-
-template <typename T>
-bool vector<T>::empty() {
+bool vector<T>::empty() const noexcept{
     if (container_size == 0)
         return true;
     else 
@@ -125,12 +109,12 @@ bool vector<T>::empty() {
 }
 
 template <typename T>
-typename vector<T>::size_type vector<T>::size() {
+typename vector<T>::size_type vector<T>::size() const noexcept{
     return container_size;
 }
 
 template <typename T>
-typename vector<T>::size_type vector<T>::max_size() {
+typename vector<T>::size_type vector<T>::max_size(){
     std::allocator <T> max;
     return static_cast<size_type>(max.max_size());
 }
@@ -141,12 +125,12 @@ void vector<T>::reserve(size_type size) {
         throw std::out_of_range("Заданный буфер больше возможного размера!");
     if (size > container_capacity) {
     container_capacity = size;
-    reserve_memory(size);
+    reserve_memory();
     }
 }
 
 template <typename T>
-typename vector<T>::size_type vector<T>::capacity(){
+typename vector<T>::size_type vector<T>::capacity() const noexcept{
     return container_capacity;
 }
 
@@ -154,12 +138,12 @@ template <typename T>
 void vector<T>::shrink_to_fit() {
     if (container_capacity > container_size) {
         container_capacity = container_size;
-        reserve_memory(container_size);
+        reserve_memory();
     }
 }
 
 template <typename T>
-void vector<T>::clear() {
+void vector<T>::clear() noexcept {
     container_size = 0;
 }
 
@@ -205,20 +189,20 @@ void vector<T>::push_back(const_reference value) {
         array[container_size] = value;
     else {
     container_capacity *= 2;
-    reserve_memory(container_size);
+    reserve_memory();
     array[container_size] = value;
     }
     container_size++;
 }
 
 template <typename T>
-void vector<T>::pop_back() {
+void vector<T>::pop_back() noexcept {
     if(!empty())
     container_size--;
 }
 
 template <typename T>
-void vector<T>::swap(vector& other) {
+void vector<T>::swap(vector& other) noexcept {
     std::swap(container_size, other.container_size);
     std::swap(container_capacity, other.container_capacity);
     std::swap(array, other.array);
@@ -243,9 +227,9 @@ void vector<T>::delete_mem() {
 /// @brief Изменение размера буфера/размера вектора через временный массив
 /// @param size новый размер вектора
 template <typename T>
-void vector<T>::reserve_memory(size_type size) {
+void vector<T>::reserve_memory() {
     T* array_rev = new T[container_capacity]; 
-    for (size_type i = 0; i < size; ++i)
+    for (size_type i = 0; i < container_size; ++i)
         array_rev[i] = array[i];
     delete[] array;
     array = array_rev;
