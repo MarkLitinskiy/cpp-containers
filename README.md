@@ -1,4 +1,7 @@
 # s21_containers
+Project date: 08.2023
+
+## Information
 
 This group project implements the main standard C++ container classes: `list` (list), `map` (dictionary), `queue` (queue), `set` (set), `stack` (stack), `vector` (vector), `array` (array), `multiset` (multiset).  
  I wrote `vector`, `array`, also implemented `list`, `queue` and `stack` together with co-commanders.
