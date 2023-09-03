@@ -1,45 +1,44 @@
 # s21_containers
 
-This group project implements the main standard C++ container classes: `list` (list), `map` (dictionary), `queue` (queue), `set` (set), `stack` (stack), `vector` (vector), `array` (array), `multiset` (multiset).  
- I wrote `vector`, `array`, also implemented `list`, `queue` and `stack` together with co-commanders.
+ В рамках данного группового проекта реализованы основные стандартные контейнерные классы языка С++: `list` (список), `map` (словарь), `queue` (очередь), `set` (множество), `stack` (стек), `vector` (вектор), `array` (массив), `multiset` (мультимножество).  
+ Я писал `vector`, `array`, также совместно с сокомандниками реализовывал `list`, `queue` и `stack`.
 
 
 ## Project build
 
-The project is built with the `make` command in the `rc` folder, there are the following purposes:  
-- `test` - to run general testing,  
-- `test_ContainerName` - individual test for each container,  
-- `valgrind` - check for leaks with the valgrind utility,  
-- `docker_check` - testing and checking for leaks via docker on ubuntu system,  
-- `clean` - clean the project from temporary files.
+Сборка проекта осуществляется командой `make` в папке `src`, существуют следующие цели:  
+- `test` - запуск общего тестирования,  
+- `test_ContainerName` - индивидуальный тест для каждого контейнера,  
+- `valgrind` - проверка на утечки утилитой valgrind,  
+- `docker_check` - тестирование и проверка на утечки через docker в системе ubuntu,  
+- `clean` - очистить проект от временных файлов.
 
-## Implementation
+## Реализация
 
-- The program is developed in C++ language of C++17 standard using gcc compiler
-- The program code is located in the src folder
-- Google Style is followed when writing the code
-- Iterators are used
-- Classes are implemented using templates
-- Classes are implemented inside `s21` namespace
-- Full coverage of unit-tests of methods of container classes is prepared with the help of GTest library.
-- Standard Template Library (STL) logic is followed
+- Программа разработана на языке C++ стандарта C++17 с использованием компилятора gcc
+- Код программы находится в папке src
+- При написании кода соблюдён Google Style
+- Используются итераторы
+- Классы реализованы с помощью шаблонов
+- Классы реализованы внутри пространства имен `s21`
+- Подготовлено полное покрытие unit-тестами методов контейнерных классов c помощью библиотеки GTest
+- Соблюдена логика работы стандартной библиотеки шаблонов (STL)
 
-## Description of container methods
+## Описание методов контейнеров
 
 ### List
 
 <details>
-
-<summary>Specification</summary>
+  <summary>Спецификация</summary>
 <br />
 
 *List Member type*
 
-This table contains in-class type overrides (typical for the standard STL library) that are adopted to make class code easy to understand:
+В этой таблице перечислены внутриклассовые переопределения типов (типичные для стандартной библиотеки STL), принятые для удобства восприятия кода класса:
 
 | Member type            | definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
-| `value_type`             | `T` defines the type of an element (T is a template parameter)                                  |
+| `value_type`             | `T` defines the type of an element (T is template parameter)                                  |
 | `reference`              | `T &` defines the type of the reference to an element                                                             |
 | `const_reference`        | `const T &` defines the type of the constant reference                                         |
 | `iterator`               | internal class `ListIterator<T>` defines the type for iterating through the container                                                 |
@@ -48,21 +47,21 @@ This table contains in-class type overrides (typical for the standard STL librar
 
 *List Functions*
 
-This table contains the main public methods for interacting with the class:
+В этой таблице перечислены основные публичные методы для взаимодействия с классом:
 
 | Functions      | Definition                                      |
 |----------------|-------------------------------------------------|
-| `list()`  | default constructor, creates an empty list                                  |
+| `list()`  | default constructor, creates empty list                                  |
 | `list(size_type n)`  | parameterized constructor, creates the list of size n                                 |
-| `list(std::initializer_list<value_type> const &items)`  | initializer list constructor, creates a list initizialized using std::initializer_list<T>    |
+| `list(std::initializer_list<value_type> const &items)`  | initializer list constructor, creates list initizialized using std::initializer_list<T>    |
 | `list(const list &l)`  | copy constructor  |
 | `list(list &&l)`  | move constructor  |
 | `~list()`  | destructor  |
-| `operator=(list &&l)`      | assignment operator overload for moving an object                                |
+| `operator=(list &&l)`      | assignment operator overload for moving object                                |
 
 *List Element access*
 
-This table contains the public methods for accessing the elements of the class:
+В этой таблице перечислены публичные методы для доступа к элементам класса:
 
 | Element access | Definition                                      |
 |----------------|-------------------------------------------------|
@@ -71,7 +70,7 @@ This table contains the public methods for accessing the elements of the class:
 
 *List Iterators*
 
-This table contains the public methods for iterating over class elements (access to iterators):
+В этой таблице перечислены публичные методы для итерирования по элементам класса (доступ к итераторам):
 
 | Iterators      | Definition                                      |
 |----------------|-------------------------------------------------|
@@ -80,7 +79,7 @@ This table contains the public methods for iterating over class elements (access
 
 *List Capacity*
 
-This table contains the public methods for accessing the container capacity information:
+В этой таблице перечислены публичные методы для доступа к информации о наполнении контейнера:
 
 | Capacity       | Definition                                      |
 |----------------|-------------------------------------------------|
@@ -90,13 +89,13 @@ This table contains the public methods for accessing the container capacity info
 
 *List Modifiers*
 
-This table contains the public methods for modifying a container:
+В этой таблице перечислены публичные методы для изменения контейнера:
 
 | Modifiers      | Definition                                      |
 |----------------|-------------------------------------------------|
 | `void clear()`          | clears the contents                             |
 | `iterator insert(iterator pos, const_reference value)`         | inserts element into concrete pos and returns the iterator that points to the new element     |
-| `void erase(iterator pos)`          | erases an element at pos                                 |
+| `void erase(iterator pos)`          | erases element at pos                                 |
 | `void push_back(const_reference value)`      | adds an element to the end                      |
 | `void pop_back()`   | removes the last element        |
 | `void push_front(const_reference value)`      | adds an element to the head                      |
@@ -110,15 +109,16 @@ This table contains the public methods for modifying a container:
 
 </details>
 
+
 ### Map
 
 <details>
-  <summary>Specification</summary>
+  <summary>Спецификация</summary>
 <br />
 
 *Map Member type*
 
-This table contains in-class type overrides (typical for the standard STL library) that are adopted to make class code easy to understand:
+В этой таблице перечислены внутриклассовые переопределения типов (типичные для стандартной библиотеки STL), принятые для удобства восприятия кода класса:
 
 | Member type            | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
@@ -133,29 +133,29 @@ This table contains in-class type overrides (typical for the standard STL librar
 
 *Map Member functions*
 
-This table contains the main public methods for interacting with the class:
+В этой таблице перечислены основные публичные методы для взаимодействия с классом:
 
 | Member functions      | Definition                                      |
 |----------------|-------------------------------------------------|
-| `map()`  | default constructor, creates an empty map                                 |
+| `map()`  | default constructor, creates empty map                                 |
 | `map(std::initializer_list<value_type> const &items)`  | initializer list constructor, creates the map initizialized using std::initializer_list<T>    |
 | `map(const map &m)`  | copy constructor  |
 | `map(map &&m)`  | move constructor  |
 | `~map()`  | destructor  |
-| `operator=(map &&m)`      | assignment operator overload for moving an object                                |
+| `operator=(map &&m)`      | assignment operator overload for moving object                                |
 
 *Map Element access*
 
-This table contains the public methods for accessing the elements of the class:
+В этой таблице перечислены публичные методы для доступа к элементам класса:
 
 | Element access         | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
-| `T& at(const Key& key)`                     | access a specified element with bounds checking                                          |
+| `T& at(const Key& key)`                     | access specified element with bounds checking                                          |
 | `T& operator[](const Key& key)`             | access or insert specified element                                                     |
 
 *Map Iterators*
 
-This table contains the public methods for iterating over class elements (access to iterators):
+В этой таблице перечислены публичные методы для итерирования по элементам класса (доступ к итераторам):
 
 | Iterators              | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
@@ -164,7 +164,7 @@ This table contains the public methods for iterating over class elements (access
 
 *Map Capacity*
 
-This table contains the public methods for accessing the container capacity information:
+В этой таблице перечислены публичные методы для доступа к информации о наполнении контейнера:
 
 | Capacity               | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
@@ -174,21 +174,21 @@ This table contains the public methods for accessing the container capacity info
 
 *Map Modifiers*
 
-This table contains the public methods for modifying a container:
+В этой таблице перечислены публичные методы для изменения контейнера:
 
 | Modifiers              | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
 | `void clear()`                  | clears the contents                                                                    |
-| `std::pair<iterator, bool> insert(const value_type& value)`                 | inserts a node and returns an iterator to where the element is in the container and bool denoting whether the insertion took place                                        |
-| `std::pair<iterator, bool> insert(const Key& key, const T& obj)`                 | inserts a value by key and returns an iterator to where the element is in the container and bool denoting whether the insertion took place    |
+| `std::pair<iterator, bool> insert(const value_type& value)`                 | inserts node and returns iterator to where the element is in the container and bool denoting whether the insertion took place                                        |
+| `std::pair<iterator, bool> insert(const Key& key, const T& obj)`                 | inserts value by key and returns iterator to where the element is in the container and bool denoting whether the insertion took place    |
 | `std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);`       | inserts an element or assigns to the current element if the key already exists         |
-| `void erase(iterator pos)`                  | erases an element at pos                                                                        |
+| `void erase(iterator pos)`                  | erases element at pos                                                                        |
 | `void swap(map& other)`                   | swaps the contents                                                                     |
 | `void merge(map& other);`                  | splices nodes from another container                                                   |
 
 *Map Lookup*
 
-This table contains the public methods for viewing the container:
+В этой таблице перечислены публичные методы, осуществляющие просмотр контейнера:
 
 | Lookup                 | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
@@ -199,12 +199,12 @@ This table contains the public methods for viewing the container:
 ### Queue
 
 <details>
-  <summary>Specification</summary>
+  <summary>Спецификация</summary>
 <br />
 
 *Queue Member type*
 
-This table contains in-class type overrides (typical for the standard STL library) that are adopted to make class code easy to understand:
+В этой таблице перечислены внутриклассовые переопределения типов (типичные для стандартной библиотеки STL), принятые для удобства восприятия кода класса:
 
 | Member type      | Definition                                       |
 |------------------|--------------------------------------------------|
@@ -215,21 +215,20 @@ This table contains in-class type overrides (typical for the standard STL librar
 
 *Queue Member functions*
 
-This table contains the main public methods for interacting with the class:
-
+В этой таблице перечислены основные публичные методы для взаимодействия с классом:
 
 | Functions      | Definition                                      |
 |----------------|-------------------------------------------------|
-| `queue()`  | default constructor, creates an empty queue                                 |
+| `queue()`  | default constructor, creates empty queue                                 |
 | `queue(std::initializer_list<value_type> const &items)`  | initializer list constructor, creates queue initizialized using std::initializer_list<T>    |
 | `queue(const queue &q)`  | copy constructor  |
 | `queue(queue &&q)`  | move constructor  |
 | `~queue()`  | destructor  |
-| `operator=(queue &&q)`      | assignment operator overload for moving an object                                |
+| `operator=(queue &&q)`      | assignment operator overload for moving object                                |
 
 *Queue Element access*
 
-This table contains the public methods for accessing the elements of the class:
+В этой таблице перечислены публичные методы для доступа к элементам класса:
 
 | Element access | Definition                                      |
 |----------------|-------------------------------------------------|
@@ -238,7 +237,7 @@ This table contains the public methods for accessing the elements of the class:
 
 *Queue Capacity*
 
-This table contains the public methods for accessing the container capacity information:
+В этой таблице перечислены публичные методы для доступа к информации о наполнении контейнера:
 
 | Capacity       | Definition                                      |
 |----------------|-------------------------------------------------|
@@ -247,11 +246,11 @@ This table contains the public methods for accessing the container capacity info
 
 *Queue Modifiers*
 
-This table contains the public methods for modifying a container:
+В этой таблице перечислены публичные методы для изменения контейнера:
 
 | Modifiers        | Definition                                       |
 |------------------|--------------------------------------------------|
-| `void push(const_reference value)`             | inserts an element at the end                       |
+| `void push(const_reference value)`             | inserts element at the end                       |
 | `void pop()`              | removes the first element                        |
 | `void swap(queue& other)`             | swaps the contents                               |
 
@@ -260,12 +259,12 @@ This table contains the public methods for modifying a container:
 ### Set
 
 <details>
-  <summary>Specification</summary>
+  <summary>Спецификация</summary>
 <br />
 
 *Set Member type*
 
-This table contains in-class type overrides (typical for the standard STL library) that are adopted to make class code easy to understand:
+В этой таблице перечислены внутриклассовые переопределения типов (типичные для стандартной библиотеки STL), принятые для удобства восприятия кода класса:
 
 | Member type            | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
@@ -279,29 +278,31 @@ This table contains in-class type overrides (typical for the standard STL librar
 
 *Set Member functions*
 
-This table contains the main public methods for interacting with the class:
+В этой таблице перечислены основные публичные методы для взаимодействия с классом:
 
 | Member functions      | Definition                                      |
 |----------------|-------------------------------------------------|
-| `set()`  | default constructor, creates an empty set                                 |
+| `set()`  | default constructor, creates empty set                                 |
 | `set(std::initializer_list<value_type> const &items)`  | initializer list constructor, creates the set initizialized using std::initializer_list<T>    |
 | `set(const set &s)`  | copy constructor  |
 | `set(set &&s)`  | move constructor  |
 | `~set()`  | destructor  |
-| `operator=(set &&s)`      | assignment operator overload for moving an object                                |
+| `operator=(set &&s)`      | assignment operator overload for moving object                                |
+
 
 *Set Iterators*
 
-This table contains the public methods for iterating over class elements (access to iterators):
+В этой таблице перечислены публичные методы для итерирования по элементам класса (доступ к итераторам):
 
 | Iterators              | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
 | `iterator begin()`            | returns an iterator to the beginning                                                   |
 | `iterator end()`                | returns an iterator to the end                                                         |
 
+
 *Set Capacity*
 
-This table contains the public methods for accessing the container capacity information:
+В этой таблице перечислены публичные методы для доступа к информации о наполнении контейнера:
 
 | Capacity       | Definition                                      |
 |----------------|-------------------------------------------------|
@@ -311,36 +312,36 @@ This table contains the public methods for accessing the container capacity info
 
 *Set Modifiers*
 
-This table contains the public methods for modifying a container:
+В этой таблице перечислены публичные методы для изменения контейнера:
 
 | Modifiers              | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
 | `void clear()`                  | clears the contents                                                                    |
-| `std::pair<iterator, bool> insert(const value_type& value)`                 | inserts a node and returns an iterator to where the element is in the container and bool denoting whether the insertion took place                                        |
-| `void erase(iterator pos)`                  | erases an element at pos                                                                        |
+| `std::pair<iterator, bool> insert(const value_type& value)`                 | inserts node and returns iterator to where the element is in the container and bool denoting whether the insertion took place                                        |
+| `void erase(iterator pos)`                  | erases element at pos                                                                        |
 | `void swap(set& other)`                   | swaps the contents                                                                     |
 | `void merge(set& other);`                  | splices nodes from another container                                                   |
 
 *Set Lookup*
 
-This table contains the public methods for viewing the container:
+В этой таблице перечислены публичные методы, осуществляющие просмотр контейнера:
 
 | Lookup                 | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
-| `iterator find(const Key& key)`                   | finds an element with a specific key                                                        |
-| `bool contains(const Key& key)`               | checks if the container contains an element with a specific key                             |
+| `iterator find(const Key& key)`                   | finds element with specific key                                                        |
+| `bool contains(const Key& key)`               | checks if the container contains element with specific key                             |
 
 </details>
 
 ### Stack
 
 <details>
-  <summary>Specification</summary>
+  <summary>Спецификация</summary>
 <br />
 
 *Stack Member type*
 
-This table contains in-class type overrides (typical for the standard STL library) that are adopted to make class code easy to understand:
+В этой таблице перечислены внутриклассовые переопределения типов (типичные для стандартной библиотеки STL), принятые для удобства восприятия кода класса:
 
 | Member type      | Definition                                       |
 |------------------|--------------------------------------------------|
@@ -351,41 +352,41 @@ This table contains in-class type overrides (typical for the standard STL librar
 
 *Stack Member functions*
 
-This table contains the main public methods for interacting with the class:
+В этой таблице перечислены основные публичные методы для взаимодействия с классом:
 
 | Functions      | Definition                                      |
 |----------------|-------------------------------------------------|
-| `stack()`  | default constructor, creates an empty stack                                 |
+| `stack()`  | default constructor, creates empty stack                                 |
 | `stack(std::initializer_list<value_type> const &items)`  | initializer list constructor, creates stack initizialized using std::initializer_list<T>    |
 | `stack(const stack &s)`  | copy constructor  |
 | `stack(stack &&s)`  | move constructor  |
 | `~stack()`  | destructor  |
-| `operator=(stack &&s)`      | assignment operator overload for moving an object                                |
+| `operator=(stack &&s)`      | assignment operator overload for moving object                                |
 
-*Stack Element access*
+*Stack Element access*   
 
-This table contains the public methods for accessing the elements of the class:
+В этой таблице перечислены публичные методы для доступа к элементам класса:
 
 | Element access   | Definition                                       |
 |------------------|--------------------------------------------------|
 | `const_reference top()`              | accesses the top element                         |
 
-*Stack Capacity*
+*Stack Capacity*   
 
-This table contains the public methods for accessing the container capacity information:
+В этой таблице перечислены публичные методы для доступа к информации о наполнении контейнера:
 
 | Capacity       | Definition                                      |
 |----------------|-------------------------------------------------|
 | `bool empty()`          | checks whether the container is empty           |
 | `size_type size()`           | returns the number of elements                  |
 
-*Stack Modifiers*
+*Stack Modifiers*        
 
-This table contains the public methods for modifying a container:
+В этой таблице перечислены публичные методы для изменения контейнера:
 
 | Modifiers        | Definition                                       |
 |------------------|--------------------------------------------------|
-| `void push(const_reference value)`             | inserts an element at the top                       |
+| `void push(const_reference value)`             | inserts element at the top                       |
 | `void pop()`              | removes the top element                        |
 | `void swap(stack& other)`             | swaps the contents                               |
 
@@ -394,16 +395,16 @@ This table contains the public methods for modifying a container:
 ### Vector
 
 <details>
-  <summary>Specification</summary>
+  <summary>Спецификация</summary>
 <br />
 
 *Vector Member type*
 
-This table contains in-class type overrides (typical for the standard STL library) that are adopted to make class code easy to understand:
+В этой таблице перечислены внутриклассовые переопределения типов (типичные для стандартной библиотеки STL), принятые для удобства восприятия кода класса:
 
 | Member type            | definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
-| `value_type`             | `T` defines the type of the element (T is template parameter)                                  |
+| `value_type`             | `T` defines the type of an element (T is template parameter)                                  |
 | `reference`              | `T &` defines the type of the reference to an element                                                             |
 | `const_reference`        | `const T &` defines the type of the constant reference                                         |
 | `iterator`               | `T *` defines the type for iterating through the container                                                 |
@@ -412,33 +413,33 @@ This table contains in-class type overrides (typical for the standard STL librar
 
 *Vector Member functions*
 
-This table contains the main public methods for interacting with the class:
+В этой таблице перечислены основные публичные методы для взаимодействия с классом:
 
 | Functions      | Definition                                      |
 |----------------|-------------------------------------------------|
-| `vector()`  | default constructor, creates an empty vector                                 |
+| `vector()`  | default constructor, creates empty vector                                 |
 | `vector(size_type n)`  | parameterized constructor, creates the vector of size n                                 |
-| `vector(std::initializer_list<value_type> const &items)`  | initializer list constructor, creates a vector initizialized using std::initializer_list<T>    |
+| `vector(std::initializer_list<value_type> const &items)`  | initializer list constructor, creates vector initizialized using std::initializer_list<T>    |
 | `vector(const vector &v)`  | copy constructor  |
 | `vector(vector &&v)`  | move constructor  |
 | `~vector()`  | destructor  |
-| `operator=(vector &&v)`      | assignment operator overload for moving an object                                |
+| `operator=(vector &&v)`      | assignment operator overload for moving object                                |
 
 *Vector Element access*
 
-This table contains the public methods for accessing the elements of the class:
+В этой таблице перечислены публичные методы для доступа к элементам класса:
 
 | Element access         | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
-| `reference at(size_type pos)`                     | access a specified element with bounds checking                                          |
-| `reference operator[](size_type pos);`             | access a specified element                                                               |
+| `reference at(size_type pos)`                     | access specified element with bounds checking                                          |
+| `reference operator[](size_type pos);`             | access specified element                                                               |
 | `const_reference front()`          | access the first element                        |
 | `const_reference back()`           | access the last element                         |
-| `T* data()`                   | direct access the underlying array                                                  |
+| `T* data()`                   | direct access to the underlying array                                                  |
 
 *Vector Iterators*
 
-This table contains the public methods for iterating over class elements (access to iterators):
+В этой таблице перечислены публичные методы для итерирования по элементам класса (доступ к итераторам):
 
 | Iterators      | Definition                                      |
 |----------------|-------------------------------------------------|
@@ -447,7 +448,8 @@ This table contains the public methods for iterating over class elements (access
 
 *Vector Capacity*
 
-This table contains the public methods for accessing the container capacity information:
+В этой таблице перечислены публичные методы для доступа к информации о наполнении контейнера:
+
 
 | Capacity               | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
@@ -460,14 +462,13 @@ This table contains the public methods for accessing the container capacity info
 
 *Vector Modifiers*
 
-This table contains the public methods for modifying a container:
-
+В этой таблице перечислены публичные методы для изменения контейнера:
 
 | Modifiers      | Definition                                      |
 |----------------|-------------------------------------------------|
 | `void clear()`          | clears the contents                             |
 | `iterator insert(iterator pos, const_reference value)`         | inserts elements into concrete pos and returns the iterator that points to the new element     |
-| `void erase(iterator pos)`          | erases an element at pos                                 |
+| `void erase(iterator pos)`          | erases element at pos                                 |
 | `void push_back(const_reference value)`      | adds an element to the end                      |
 | `void pop_back()`   | removes the last element        |
 | `void swap(vector& other)`                   | swaps the contents                                                                     |
@@ -477,12 +478,12 @@ This table contains the public methods for modifying a container:
 ### Array
 
 <details>
-  <summary>Specification</summary>
+  <summary>Спецификация</summary>
 <br />
 
 *Array Member type*
 
-This table contains in-class type overrides (typical for the standard STL library) that are adopted to make class code easy to understand:
+В этой таблице перечислены внутриклассовые переопределения типов (типичные для стандартной библиотеки STL), принятые для удобства восприятия кода класса:
 
 | Member type            | definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
@@ -495,32 +496,32 @@ This table contains in-class type overrides (typical for the standard STL librar
 
 *Array Member functions*
 
-This table contains the main public methods for interacting with the class:
+В этой таблице перечислены основные публичные методы для взаимодействия с классом:
 
 | Functions      | Definition                                      |
 |----------------|-------------------------------------------------|
-| `array()`  | default constructor, creates an empty array                                 |
+| `array()`  | default constructor, creates empty array                                 |
 | `array(std::initializer_list<value_type> const &items)`  | initializer list constructor, creates array initizialized using std::initializer_list<T>    |
 | `array(const array &a)`  | copy constructor  |
 | `array(array &&a)`  | move constructor  |
 | `~array()`  | destructor  |
-| `operator=(array &&a)`      | assignment operator overload for moving an object                                |
+| `operator=(array &&a)`      | assignment operator overload for moving object                                |
 
 *Array Element access*
 
-This table contains the public methods for accessing the elements of the class:
+В этой таблице перечислены публичные методы для доступа к элементам класса:
 
 | Element access         | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
-| `reference at(size_type pos)`                     | access a specified element with bounds checking                                          |
-| `reference operator[](size_type pos)`             | access a specified element                                                               |
+| `reference at(size_type pos)`                     | access specified element with bounds checking                                          |
+| `reference operator[](size_type pos)`             | access specified element                                                               |
 | `const_reference front()`          | access the first element                        |
 | `const_reference back()`           | access the last element                         |
 | `iterator data()`                   | direct access to the underlying array                                                  |
 
 *Array Iterators*
 
-This table contains the public methods for iterating over class elements (access to iterators):
+В этой таблице перечислены публичные методы для итерирования по элементам класса (доступ к итераторам):
 
 | Iterators      | Definition                                      |
 |----------------|-------------------------------------------------|
@@ -529,7 +530,7 @@ This table contains the public methods for iterating over class elements (access
 
 *Array Capacity*
 
-This table contains the public methods for accessing the container capacity information:
+В этой таблице перечислены публичные методы для доступа к информации о наполнении контейнера:
 
 | Capacity               | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
@@ -539,24 +540,25 @@ This table contains the public methods for accessing the container capacity info
 
 *Array Modifiers*
 
-This table contains the public methods for modifying a container:
+В этой таблице перечислены публичные методы для изменения контейнера:
 
 | Modifiers      | Definition                                      |
 |----------------|-------------------------------------------------|
 | `void swap(array& other)`                   | swaps the contents                                |
-| `void fill(const_reference value);`         | assigns the given value to all elements in the container. |
+| `void fill(const_reference value);`         | assigns the given value value to all elements in the container. |
+
 
 </details>
 
-### Multiset
+### Multiset 
 
 <details>
-  <summary>Specification</summary>
+  <summary>Спецификация</summary>
 <br />
 
 *Multiset Member type*
 
-This table contains in-class type overrides (typical for the standard STL library) that are adopted to make class code easy to understand:
+В этой таблице перечислены внутриклассовые переопределения типов (типичные для стандартной библиотеки STL), принятые для удобства восприятия кода класса:
 
 | Member type            | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
@@ -570,29 +572,30 @@ This table contains in-class type overrides (typical for the standard STL librar
 
 *Multiset Member functions*
 
-This table contains the main public methods for interacting with the class:
+В этой таблице перечислены основные публичные методы для взаимодействия с классом:
 
 | Member functions      | Definition                                      |
 |----------------|-------------------------------------------------|
-| `multiset()`  | default constructor, creates an empty set                                 |
+| `multiset()`  | default constructor, creates empty set                                 |
 | `multiset(std::initializer_list<value_type> const &items)`  | initializer list constructor, creates the set initizialized using std::initializer_list<T>    |
 | `multiset(const multiset &ms)`  | copy constructor  |
 | `multiset(multiset &&ms)`  | move constructor  |
 | `~multiset()`  | destructor  |
-| `operator=(multiset &&ms)`      | assignment operator overload for moving an object                                |
+| `operator=(multiset &&ms)`      | assignment operator overload for moving object                                |
 
 *Multiset Iterators*
 
-This table contains the public methods for iterating over class elements (access to iterators):
+В этой таблице перечислены публичные методы для итерирования по элементам класса (доступ к итераторам):
 
 | Iterators              | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
 | `iterator begin()`            | returns an iterator to the beginning                                                   |
 | `iterator end()`                | returns an iterator to the end                                                         |
 
+
 *Multiset Capacity*
 
-This table contains the public methods for accessing the container capacity information:
+В этой таблице перечислены публичные методы для доступа к информации о наполнении контейнера:
 
 | Capacity       | Definition                                      |
 |----------------|-------------------------------------------------|
@@ -602,27 +605,27 @@ This table contains the public methods for accessing the container capacity info
 
 *Multiset Modifiers*
 
-This table contains the public methods for modifying a container:
+В этой таблице перечислены публичные методы для изменения контейнера:
 
 | Modifiers              | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
 | `void clear()`                  | clears the contents                                                                    |
-| `iterator insert(const value_type& value)`                 | inserts a node and returns an iterator to where the element is in the container                                        |
-| `void erase(iterator pos)`                  | erases an element at pos                                                                        |
+| `iterator insert(const value_type& value)`                 | inserts node and returns iterator to where the element is in the container                                        |
+| `void erase(iterator pos)`                  | erases element at pos                                                                        |
 | `void swap(multiset& other)`                   | swaps the contents                                                                     |
 | `void merge(multiset& other)`                  | splices nodes from another container                                                   |
 
 *Multiset Lookup*
 
-This table contains the public methods for viewing the container:
+В этой таблице перечислены публичные методы, осуществляющие просмотр контейнера:
 
 | Lookup                 | Definition                                                                             |
 |------------------------|----------------------------------------------------------------------------------------|
-| `size_type count(const Key& key)`                  | returns the number of elements matching a specific key                                   |
-| `iterator find(const Key& key)`                   | finds element with a specific key                                                        |
-| `bool contains(const Key& key)`               | checks if the container contains element with a specific key                             |
+| `size_type count(const Key& key)`                  | returns the number of elements matching specific key                                   |
+| `iterator find(const Key& key)`                   | finds element with specific key                                                        |
+| `bool contains(const Key& key)`               | checks if the container contains element with specific key                             |
 | `std::pair<iterator,iterator> equal_range(const Key& key)`            | returns range of elements matching a specific key                                      |
-| `iterator lower_bound(const Key& key)`            | returns an iterator to the first element not less than the given key                   |
-| `iterator upper_bound(const Key& key)`            | returns an iterator to the first element greater than the given key                    |
+| `iterator lower_bound(const Key& key)`            | returns an iterator to the first element not less than the given key                   |
+| `iterator upper_bound(const Key& key)`            | returns an iterator to the first element greater than the given key                    |
 
 </details>
